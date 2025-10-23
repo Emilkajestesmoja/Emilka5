@@ -1,81 +1,84 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Referencje do elementów DOM
-    const robotTextElement = document.getElementById('robot-text');
-    const robotContainer = document.getElementById('robot-container');
-    const starsContainer = document.getElementById('stars-container');
-
-    // ### ZMIANA TUTAJ ###
-    const finalUrl = 'https://emilkajestesmoja.github.io/Emilka6/';
-
-    // Funkcje pomocnicze
-    const delay = ms => new Promise(res => setTimeout(res, ms));
-
-    function typeWriter(text) {
-        return new Promise(resolve => {
-            let i = 0;
-            robotTextElement.textContent = '';
-            const type = () => {
-                if (i < text.length) {
-                    robotTextElement.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(type, 50); // Szybkość pisania
-                } else {
-                    resolve();
-                }
-            };
-            type();
-        });
-    }
-
-    // Funkcja do tworzenia spadających gwiazd
-    function createStars(count) {
-        for (let i = 0; i < count; i++) {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            const size = Math.random() * 2 + 1;
-            star.style.width = `${size}px`;
-            star.style.height = `${size}px`;
-            star.style.left = `${Math.random() * 100}%`;
-            star.style.animationDuration = `${Math.random() * 5 + 5}s`; // Czas spadania: 5-10s
-            star.style.animationDelay = `${Math.random() * 10}s`;
-            star.style.opacity = Math.random() * 0.5 + 0.3;
-            starsContainer.appendChild(star);
-        }
-    }
-
-    // Główna, finałowa sekwencja
-    async function playFinalSequence() {
-        createStars(50); // Stwórz 50 gwiazd w tle
-        await delay(1000);
-
-        await typeWriter("Gratulacje Emilka! Udało Ci się wszystko zrobić.");
-        await delay(2000);
-
-        await typeWriter("Teraz pora przejść do prawdziwej strony... to, co miało być od początku.");
-        await delay(2500);
-
-        await typeWriter("Więc zaraz zostaniesz przeniesiona do właściwego miejsca.");
-        await delay(2000);
-
-        await typeWriter("Ja idę na odpoczynek... nawet nie wiesz, jak Twój chłopak mnie męczył....");
-        await delay(3000);
-
-        // Robot się żegna
-        await typeWriter("PA PA!");
-        robotContainer.classList.add('is-waving'); // Dodaj klasę do machania ręką
-
-        await delay(2500); // Czekaj, aż skończy machać
-
-        // Robot odlatuje
-        robotContainer.classList.remove('is-waving');
-        robotContainer.classList.add('is-flying');
-
-        // Przekierowanie po chwili
-        setTimeout(() => {
-            window.location.href = finalUrl;
-        }, 1500);
-    }
-
-    // Start
-    playFinalSequence();
-});
+:root {
+    --bg-color: #090a0f;
+    --robot-primary: #e0e0e0;
+    --robot-secondary: #b0b0b0;
+    --eye-color: #00bcd4;
+    --accent-color: #f92a82;
+    --font-family: 'Roboto Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: var(--font-family);
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, var(--bg-color) 100%);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+#stars-container {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+}
+.star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: fall linear infinite;
+}
+@keyframes fall {
+    from { transform: translateY(-20px); }
+    to { transform: translateY(105vh); }
+}
+.scene {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    animation: fadeInScene 1.5s ease-out forwards;
+}
+@keyframes fadeInScene {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+.robot-container {
+    position: relative;
+    animation: float 6s ease-in-out infinite;
+    transition: transform 1.5s ease-in, opacity 1.5s ease-in;
+}
+.robot { position: relative; width: 150px; height: 220px; }
+.head { width: 120px; height: 90px; background: var(--robot-primary); border-radius: 20px 20px 10px 10px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); border: 3px solid var(--robot-secondary); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.antenna { width: 4px; height: 40px; background: var(--robot-secondary); position: absolute; top: -40px; left: 50%; transform: translateX(-50%); }
+.antenna-light { width: 12px; height: 12px; background: var(--accent-color); border-radius: 50%; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); box-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color); animation: pulse 2s infinite; }
+@keyframes pulse { 0% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.2); } 100% { transform: translateX(-50%) scale(1); } }
+.eyes { display: flex; justify-content: space-around; align-items: center; padding: 20px 15px; }
+.eye { width: 30px; height: 30px; background: var(--eye-color); border-radius: 50%; border: 3px solid #111; transition: background-color 0.5s; animation: blink 5s infinite; }
+@keyframes blink { 0%, 95%, 100% { transform: scaleY(1); } 97.5% { transform: scaleY(0.1); } }
+.mouth { width: 40px; height: 4px; background: var(--robot-secondary); position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); border-radius: 2px; }
+.body { width: 150px; height: 130px; background: var(--robot-primary); position: absolute; top: 90px; left: 50%; transform: translateX(-50%); border-radius: 10px; border: 3px solid var(--robot-secondary); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.chest-light { width: 20px; height: 20px; background: var(--accent-color); border-radius: 4px; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); box-shadow: 0 0 5px var(--accent-color); }
+.arm { width: 25px; height: 100px; background: var(--robot-secondary); position: absolute; top: 100px; border-radius: 10px; transform-origin: top center; }
+.left-arm { left: -20px; transform: rotate(10deg); }
+.right-arm { right: -20px; transform: rotate(-10deg); }
+@keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+.is-waving .right-arm {
+    animation: wave-arm 2.5s ease-in-out;
+}
+@keyframes wave-arm {
+    0%   { transform: rotate(-10deg); }
+    20%  { transform: rotate(-60deg); }
+    40%  { transform: rotate(-30deg); }
+    60%  { transform: rotate(-60deg); }
+    80%  { transform: rotate(-30deg); }
+    100% { transform: rotate(-10deg); }
+}
+.is-flying {
+    transform: translateY(-120vh) rotate(-15deg);
+    opacity: 0;
+}
+.dialogue-container { min-width: 300px; max-width: 90vw; }
+.speech-bubble { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 20px; border-radius: 15px; position: relative; text-align: center; backdrop-filter: blur(5px); width: 100%; }
+.speech-bubble::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); border: 10px solid transparent; border-bottom-color: rgba(255, 255, 255, 0.1); }
+.speech-bubble p { font-size: 1.1em; line-height: 1.6; min-height: 80px; display: flex; align-items: center; justify-content: center; }
