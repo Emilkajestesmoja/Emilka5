@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const robotContainer = document.getElementById('robot-container');
     const starsContainer = document.getElementById('stars-container');
 
-    // ### ZMIANA TUTAJ ###
-    const finalUrl = 'https://emilkajestesmoja.github.io/Emilka5/';
+    // Link do STRONY DOCELOWEJ (musi być inna niż strona, na której jest ten skrypt)
+    const finalUrl = 'https://emilkajestesmoja.github.io/Emilka6/';
 
     // Funkcje pomocnicze
     const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             star.style.width = `${size}px`;
             star.style.height = `${size}px`;
             star.style.left = `${Math.random() * 100}%`;
-            star.style.animationDuration = `${Math.random() * 5 + 5}s`; // Czas spadania: 5-10s
+            star.style.animationDuration = `${Math.random() * 5 + 5}s`;
             star.style.animationDelay = `${Math.random() * 10}s`;
             star.style.opacity = Math.random() * 0.5 + 0.3;
             starsContainer.appendChild(star);
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Główna, finałowa sekwencja
     async function playFinalSequence() {
-        createStars(50); // Stwórz 50 gwiazd w tle
+        createStars(50);
         await delay(1000);
 
         await typeWriter("Gratulacje Emilka! Udało Ci się wszystko zrobić.");
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Robot się żegna
         await typeWriter("PA PA!");
-        robotContainer.classList.add('is-waving'); // Dodaj klasę do machania ręką
+        robotContainer.classList.add('is-waving');
 
         await delay(2500); // Czekaj, aż skończy machać
 
